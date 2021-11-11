@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.Business", "Phone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.Tests", "Phoneshop.Tests\Phoneshop.Tests.csproj", "{349A73D1-E193-402C-AB1C-7A640FCD0B3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.WinForms", "Phoneshop.WinForms\Phoneshop.WinForms.csproj", "{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{349A73D1-E193-402C-AB1C-7A640FCD0B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{349A73D1-E193-402C-AB1C-7A640FCD0B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{349A73D1-E193-402C-AB1C-7A640FCD0B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
