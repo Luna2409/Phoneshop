@@ -15,8 +15,8 @@
         //Readonly > returns Brand and Type
         public string FullName 
         { 
-            get { return _fullName; } 
-            set { _fullName = $"{Brand} {Type}"; } 
+            get { return _fullName = $"{Brand} - {Type}"; } 
+            //set { _fullName = $"{Brand} - {Type}"; } 
         }
     }
 }

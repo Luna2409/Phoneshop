@@ -90,7 +90,7 @@ namespace Phoneshop.Business
 
         public List<Phone> Search(string query)
         {
-            return phones.Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).ToList();
+            return phones.Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
         }
     }
 }
