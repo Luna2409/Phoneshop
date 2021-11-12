@@ -11,12 +11,9 @@
         public int Stock { get; set; }
 
         private string _fullName = "";
-
-        //Readonly > returns Brand and Type
         public string FullName 
         { 
             get { return _fullName = $"{Brand} - {Type}"; } 
-            //set { _fullName = $"{Brand} - {Type}"; } 
         }
     }
 }
