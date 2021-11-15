@@ -45,7 +45,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(1495, 707);
+            this.btnExit.Location = new System.Drawing.Point(1610, 708);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(176, 52);
             this.btnExit.TabIndex = 0;
@@ -110,7 +110,7 @@
             this.lblDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDescription.Location = new System.Drawing.Point(554, 196);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(1117, 499);
+            this.lblDescription.Size = new System.Drawing.Size(1232, 499);
             this.lblDescription.TabIndex = 14;
             // 
             // lblType
@@ -163,7 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1683, 772);
+            this.ClientSize = new System.Drawing.Size(1798, 772);
             this.Controls.Add(this.listBoxPhone);
             this.Controls.Add(this.Stock);
             this.Controls.Add(this.Price);
