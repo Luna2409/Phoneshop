@@ -8,13 +8,14 @@ namespace Phoneshop.WinForms
     public partial class PhoneOverview : Form
     {
         private readonly static PhoneService phoneService = new();
+        bool listChanged;
 
         public PhoneOverview()
         {
             InitializeComponent();
 
             var list = phoneService.GetList();
-            listBoxPhone.DisplayMember = "FullName";
+            listBoxPhone.DisplayMember = nameof(Phone.FullName);
 
             foreach (var item in list)
             {
@@ -38,8 +39,9 @@ namespace Phoneshop.WinForms
         {
             if (txtboxSearch.Text.Length <= 3)
             {
-                if (txtboxSearch.Text.Length == 3 || txtboxSearch.Text.Length == 0)
+                if (listChanged)
                 {
+                    listChanged = false;
                     listBoxPhone.Items.Clear();
 
                     var list = phoneService.GetList();
@@ -60,6 +62,8 @@ namespace Phoneshop.WinForms
             {
                 listBoxPhone.Items.Add(item);
             }
+
+            listChanged = true;
         }
 
         private void BtnExit_Click(object sender, EventArgs e)
