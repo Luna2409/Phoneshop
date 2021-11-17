@@ -25,9 +25,12 @@ namespace Phoneshop
         {
             listOfPhones = phoneService.GetList().ToDictionary(x => x.Id);
 
+            var index = 1;
+
             foreach (var phone in listOfPhones)
             {
-                Console.WriteLine($"{phone.Key}. {phone.Value.Brand}, {phone.Value.Type}");
+                Console.WriteLine($"{index}. {phone.Value.Brand}, {phone.Value.Type}");
+                index++;
             }
             Console.WriteLine($"{listOfPhones.Count + 1}. Search");
 

@@ -1,0 +1,27 @@
+CREATE TABLE [dbo].[phones] (
+    [Id]              INT            NOT NULL,
+    [Brand]           NVARCHAR (50)  NULL,
+    [Type]            NVARCHAR (50)  NULL,
+    [Description]     VARCHAR (400)  NULL,
+    [PriceWithTax]    FLOAT (53)     NULL,
+    [PriceWithoutTax] FLOAT (53)     NULL,
+    [Stock]           INT            NULL,
+    [FullName]        NVARCHAR (100) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+Insert into phoneshop.dbo.phones(Id, Brand, Type, Description, PriceWithTax, Stock)
+Values (
+1, 
+'Huawei', 
+'P30', 
+'6.47\" FHD+ (2340x1080) OLED, 
+\r\nKirin 980 Octa - Core(2x Cortex - A76 2.6GHz + 2x Cortex - A76 1.92GHz + 4x Cortex - A55 1.8GHz),
+\r\n8GB RAM, 128GB ROM, 40 + 20 + 8 + TOF / 32MP,
+\r\nDual SIM, 4200mAh, Android 9.0 + EMUI 9.1',
+697, 
+'50')
+
+
+
+

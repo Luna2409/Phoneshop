@@ -14,11 +14,11 @@ namespace Phoneshop.Tests.PhoneServiceTests
         }
 
         [Theory]
-        [InlineData(2, "Apple")]
-        [InlineData(3, "Google")]
-        [InlineData(4, "Huawei")]
-        [InlineData(5, "Samsung")]
-        [InlineData(6, "Xiaomi")]
+        [InlineData(1, "Apple")]
+        [InlineData(2, "Google")]
+        [InlineData(3, "Huawei")]
+        [InlineData(4, "Samsung")]
+        [InlineData(5, "Xiaomi")]
         public void Should_GetPhoneById(int id, string brand)
         {
             var phone = phoneService.Get(id);

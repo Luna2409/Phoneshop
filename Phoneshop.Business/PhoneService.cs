@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Phoneshop.Business
 {
     public class PhoneService : IPhoneService
@@ -12,7 +13,7 @@ namespace Phoneshop.Business
         {
             new Phone()
             {
-                Id = 3,
+                Id = 1,
                 Brand = "Huawei",
                 Type = "P30",
                 PriceWithTax = 697,
@@ -24,7 +25,7 @@ namespace Phoneshop.Business
             },
             new Phone()
             {
-                Id = 4,
+                Id = 2,
                 Brand = "Samsung",
                 Type = "Galaxy A52",
                 PriceWithTax = 399,
@@ -36,7 +37,7 @@ namespace Phoneshop.Business
             },
             new Phone()
             {
-                Id = 1,
+                Id = 3,
                 Brand = "Apple",
                 Type = "IPhone 11",
                 PriceWithTax = 619,
@@ -48,7 +49,7 @@ namespace Phoneshop.Business
             },
             new Phone()
             {
-                Id = 2,
+                Id = 4,
                 Brand = "Google",
                 Type = "Pixel 4a",
                 PriceWithTax = 411,
@@ -72,6 +73,8 @@ namespace Phoneshop.Business
             }
         };
 
+        //DataContext dc = new DataContext(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=phoneshop;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
         public Phone Get(int id)
         {
             var phoneList = GetList();
@@ -85,6 +88,9 @@ namespace Phoneshop.Business
         public List<Phone> GetList()
         {
             return phones.OrderBy(x => x.Brand).ToList();
+            //SELECT * FROM phones;
+
+            //var phoneList = (Select )
         }
 
 
