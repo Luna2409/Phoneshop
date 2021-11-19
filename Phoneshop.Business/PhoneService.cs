@@ -47,13 +47,13 @@ namespace Phoneshop.Business
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    Phone phone = new Phone();
-                    phone.Id = (int)reader.GetInt32(0);
+                    Phone phone = new();
+                    phone.Id = reader.GetInt32(0);
                     phone.Brand = reader.GetString(1);
                     phone.Type = reader.GetString(2);
                     phone.Description = reader.GetString(3);
                     phone.PriceWithTax = reader.GetDouble(4);
-                    phone.Stock = (int)reader.GetInt32(5);
+                    phone.Stock = reader.GetInt32(5);
 
                     list.Add(phone);
                 }
