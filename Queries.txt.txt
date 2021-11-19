@@ -4,9 +4,7 @@ CREATE TABLE [dbo].[phones] (
     [Type]            NVARCHAR (50)  NULL,
     [Description]     VARCHAR (400)  NULL,
     [PriceWithTax]    FLOAT (53)     NULL,
-    [PriceWithoutTax] FLOAT (53)     NULL,
     [Stock]           INT            NULL,
-    [FullName]        NVARCHAR (100) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -21,6 +19,54 @@ Values (
 \r\nDual SIM, 4200mAh, Android 9.0 + EMUI 9.1',
 697, 
 '50')
+
+Insert into phoneshop.dbo.phones(Id, Brand, Type, Description, PriceWithTax, Stock)
+Values (
+2, 
+'Samsung', 
+'Galaxy A52', 
+'64 megapixel camera, 4k videokwaliteit 
+6.5 inch AMOLED scherm 
+128 GB opslaggeheugen (Uitbreidbaar met Micro-sd) 
+Water- en stofbestendig (IP67)',
+399, 
+'59')
+
+Insert into phoneshop.dbo.phones(Id, Brand, Type, Description, PriceWithTax, Stock)
+Values (
+3, 
+'Apple', 
+'IPhone 11', 
+'Met de dubbele camera schiet je in elke situatie een perfecte foto of video 
+De krachtige A13-chipset zorgt voor razendsnelle prestaties 
+Met Face ID hoef je enkel en alleen naar je toestel te kijken om te ontgrendelen 
+Het toestel heeft een lange accuduur dankzij een energiezuinige processor',
+619, 
+'48')
+
+Insert into phoneshop.dbo.phones(Id, Brand, Type, Description, PriceWithTax, Stock)
+Values (
+4, 
+'Google', 
+'Pixel 4a', 
+'12.2 megapixel camera, 4k videokwaliteit 
+5.81 inch OLED scherm 
+128 GB opslaggeheugen 
+3140 mAh accucapaciteit',
+411, 
+'78')
+
+Insert into phoneshop.dbo.phones(Id, Brand, Type, Description, PriceWithTax, Stock)
+Values (
+5, 
+'Xiaomi', 
+'Redmi Note 10 Pro', 
+'108 megapixel camera, 4k videokwaliteit 
+6.67 inch AMOLED scherm 
+128 GB opslaggeheugen (Uitbreidbaar met Micro-sd) 
+Water- en stofbestendig (IP53)',
+298, 
+'98')
 
 
 

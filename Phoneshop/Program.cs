@@ -11,11 +11,6 @@ namespace Phoneshop
         private readonly static PhoneService phoneService = new();
         private static Dictionary<int, Phone> listOfPhones;
 
-        public Program()
-        {
-            listOfPhones = new Dictionary<int, Phone>();
-        }
-
         static void Main(string[] args)
         {
             MainMenu();
@@ -33,7 +28,6 @@ namespace Phoneshop
                 index++;
             }
             Console.WriteLine($"{listOfPhones.Count + 1}. Search");
-
 
             Console.Write("\nType the number of the option you want: ");
             var input = Console.ReadLine();
