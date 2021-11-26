@@ -1,6 +1,5 @@
 ﻿using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -15,27 +14,33 @@ namespace Phoneshop.Business
 
         public Phone Get(int id)
         {
-            var phoneList = GetList();
+            var phoneList = GetList().ToList();
             var foundId = phoneList[id - 1].Id;
 
             var foundPhone = phoneList.FirstOrDefault(x => x.Id == foundId);
 
             return foundPhone;
+
+            //return GetPhones("SELECT * FROM phones WHERE Id = {id}");
         }
 
         public List<Phone> GetList()
         {
-            return Phones().OrderBy(x => x.Brand).ToList();
+            return GetPhones().OrderBy(x => x.Brand).ToList();
+
+            //return GetPhones("SELECT * FROM phones ORDER BY Brand");
         }
 
 
         public List<Phone> Search(string query)
         {
-            return Phones().Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
+            return GetPhones().Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
+
+            //return GetPhones("SELECT * FROM phones ORDER BY Brand WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'");
         }
 
 
-        private List<Phone> Phones()
+        private IEnumerable<Phone> GetPhones()
         {
             List<Phone> list = new();
 

@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop", "Phoneshop\Phoneshop.csproj", "{CEEB1714-CCE1-41F0-B3AF-E644557CE1C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoneshop", "Phoneshop\Phoneshop.csproj", "{CEEB1714-CCE1-41F0-B3AF-E644557CE1C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.Domain", "Phoneshop.Domain\Phoneshop.Domain.csproj", "{6609A13A-18D2-48E7-90A5-F5CDBEF4DC63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoneshop.Domain", "Phoneshop.Domain\Phoneshop.Domain.csproj", "{6609A13A-18D2-48E7-90A5-F5CDBEF4DC63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.Business", "Phoneshop.Business\Phoneshop.Business.csproj", "{7E7DFAA2-0AD1-4778-8164-272798A8097E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoneshop.Business", "Phoneshop.Business\Phoneshop.Business.csproj", "{7E7DFAA2-0AD1-4778-8164-272798A8097E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.Tests", "Phoneshop.Tests\Phoneshop.Tests.csproj", "{349A73D1-E193-402C-AB1C-7A640FCD0B3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoneshop.Tests", "Phoneshop.Tests\Phoneshop.Tests.csproj", "{349A73D1-E193-402C-AB1C-7A640FCD0B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoneshop.WinForms", "Phoneshop.WinForms\Phoneshop.WinForms.csproj", "{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoneshop.WinForms", "Phoneshop.WinForms\Phoneshop.WinForms.csproj", "{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AB7A2B05-3545-4EB2-B520-CA7435AC9ECD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportTool.ConsoleApp", "ImportTool.ConsoleApp\ImportTool.ConsoleApp.csproj", "{20E930DB-D6C8-4967-8F3A-1ABCAD35F208}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,16 @@ Global
 		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{081E7EA4-5296-42CD-B84F-DE330B0C5DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20E930DB-D6C8-4967-8F3A-1ABCAD35F208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20E930DB-D6C8-4967-8F3A-1ABCAD35F208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20E930DB-D6C8-4967-8F3A-1ABCAD35F208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20E930DB-D6C8-4967-8F3A-1ABCAD35F208}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20E930DB-D6C8-4967-8F3A-1ABCAD35F208} = {AB7A2B05-3545-4EB2-B520-CA7435AC9ECD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3ED05E71-719F-42B2-BD53-3310DE14A9CE}
