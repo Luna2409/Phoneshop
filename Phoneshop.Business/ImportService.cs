@@ -11,6 +11,8 @@ namespace Phoneshop.Business
         public List<Phone> ConvertXmlToList(string path)
         {
             List<Phone> list = new();
+            //XmlDocument xmlDocument = new();
+            //xmlDocument.LoadXml(xmlString);
 
             using (var reader = XmlReader.Create(path))
             {

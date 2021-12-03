@@ -50,20 +50,18 @@ namespace Phoneshop
         {
             Console.Clear();
 
-            try
-            {
-                Phone phoneFound = phoneService.Get(number);
+            Phone phoneFound = phoneService.Get(number);
 
-                Console.WriteLine($"{phoneFound.Brand}, {phoneFound.Type}, {phoneFound.PriceWithTax} \n");
-                Console.WriteLine($"{phoneFound.Description}");
-            }
-            catch (ArgumentOutOfRangeException)
+            if (phoneFound == null)
             {
                 Console.Clear();
                 Console.WriteLine("phone not found \n");
 
                 MainMenu();
             }
+
+            Console.WriteLine($"{phoneFound.Brand}, {phoneFound.Type}, {phoneFound.PriceWithTax} \n");
+            Console.WriteLine($"{phoneFound.Description}");
 
             Console.ReadKey();
             Console.Clear();

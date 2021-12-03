@@ -18,7 +18,7 @@ namespace Phoneshop.Tests.PhoneServiceTests
             var phones = phoneService.GetList();
             var count = phones.Count;
 
-            Assert.Equal(5, count);
+            Assert.Equal(9, count);
         }
     }
 }

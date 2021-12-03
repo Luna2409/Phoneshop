@@ -9,11 +9,9 @@
         public double PriceWithTax { get; set; }
         public double PriceWithoutTax { get; set; }
         public int Stock { get; set; }
-
-        private string _fullName = "";
         public string FullName 
         { 
-            get { return _fullName = $"{Brand} - {Type}"; } 
+            get { return $"{Brand} - {Type}"; } 
         }
     }
 }

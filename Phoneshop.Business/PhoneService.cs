@@ -14,10 +14,8 @@ namespace Phoneshop.Business
 
         public Phone Get(int id)
         {
-            var phoneList = GetList().ToList();
-            var foundId = phoneList[id - 1].Id;
-
-            var foundPhone = phoneList.FirstOrDefault(x => x.Id == foundId);
+            var phoneList = GetList().OrderBy(x => x.Id).ToList();
+            var foundPhone = phoneList.FirstOrDefault(x => x.Id == id);
 
             return foundPhone;
 
@@ -31,7 +29,6 @@ namespace Phoneshop.Business
             //return GetPhones("SELECT * FROM phones ORDER BY Brand");
         }
 
-
         public List<Phone> Search(string query)
         {
             return GetPhones().Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
@@ -39,6 +36,28 @@ namespace Phoneshop.Business
             //return GetPhones("SELECT * FROM phones ORDER BY Brand WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'");
         }
 
+        public List<Brand> GetBrandList()
+        {
+            List<Brand> brandList = new();
+
+            using (SqlConnection connection = new(connectionString))
+            {
+                SqlCommand cmd = new("SELECT * FROM brands", connection);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                { 
+                    Brand brand = new();
+                    brand.BrandID = reader.GetInt32(0);
+                    brand.BrandName = reader.GetString(1);
+
+                    brandList.Add(brand);
+                }
+                reader.Close();
+            }
+            return brandList;
+        }
 
         private IEnumerable<Phone> GetPhones()
         {
@@ -46,7 +65,10 @@ namespace Phoneshop.Business
 
             using (SqlConnection connection = new(connectionString))
             {
-                SqlCommand cmd = new("SELECT * FROM phones", connection);
+                SqlCommand cmd = new("SELECT phones.Id, brands.Brand, phones.Type, phones.Description, phones.PriceWithTax, phones.Stock " +
+                                     "FROM phones " +
+                                     "INNER JOIN brands " +
+                                     "ON phones.BrandID=brands.BrandID", connection);
 
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();

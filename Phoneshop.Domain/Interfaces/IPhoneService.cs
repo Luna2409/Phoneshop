@@ -17,5 +17,9 @@ namespace Phoneshop.Domain.Interfaces
         /// </summary>
         /// <returns></returns>
         List<Phone> GetList();
+
+        List<Phone> Search(string query);
+
+        List<Brand> GetBrandList();
     }
 }

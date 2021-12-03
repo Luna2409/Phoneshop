@@ -1,5 +1,4 @@
 ﻿using Phoneshop.Business;
-using System;
 using Xunit;
 
 namespace Phoneshop.Tests.PhoneServiceTests
@@ -14,10 +13,10 @@ namespace Phoneshop.Tests.PhoneServiceTests
         }
 
         [Theory]
-        [InlineData(1, "Apple")]
-        [InlineData(2, "Google")]
-        [InlineData(3, "Huawei")]
-        [InlineData(4, "Samsung")]
+        [InlineData(1, "Huawei")]
+        [InlineData(2, "Samsung")]
+        [InlineData(3, "Apple")]
+        [InlineData(4, "Google")]
         [InlineData(5, "Xiaomi")]
         public void Should_GetPhoneById(int id, string brand)
         {
@@ -26,9 +25,13 @@ namespace Phoneshop.Tests.PhoneServiceTests
         }
 
         [Fact]
-        public void Should_GiveArgumentOutOfRangeException()
+        public void Should_Return_Null()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => phoneService.Get(7));
+            var phone = phoneService.Get(50);
+
+            Assert.Null(phone);
+
+            //Assert.Throws<ArgumentNullException>(() => phoneService.Get(50));
         }
     }
 }

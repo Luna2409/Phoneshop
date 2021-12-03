@@ -69,5 +69,91 @@ Water- en stofbestendig (IP53)',
 '98')
 
 
+CREATE TABLE [dbo].[brands] (
+    [BrandID]		INT           NOT NULL,
+    [Brand]		NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([BrandID] ASC)
+);
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(1, 'Huawei')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(2, 'Samsung')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(3, 'Apple')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(4, 'Google')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(5, 'Xiaomi')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(6, 'OnePlus')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(7, 'Motorola')
+
+INSERT INTO brands(BrandID, Brand)
+VALUES(8, 'Poco')
+
+UPDATE phones
+SET BrandID = 1
+WHERE Id = 1;
+
+UPDATE phones
+SET BrandID = 2
+WHERE Id = 2;
+
+UPDATE phones
+SET BrandID = 3
+WHERE Id = 3;
+
+UPDATE phones
+SET BrandID = 4
+WHERE Id = 4;
+
+UPDATE phones
+SET BrandID = 5
+WHERE Id = 5;
+
+UPDATE phones
+SET BrandID = 3
+WHERE Id = 6;
+
+UPDATE phones
+SET BrandID = 6
+WHERE Id = 7;
+
+UPDATE phones
+SET BrandID = 7
+WHERE Id = 8;
+
+UPDATE phones
+SET BrandID = 8
+WHERE Id = 9;
+
+ALTER TABLE phones
+DROP COLUMN Brand;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
