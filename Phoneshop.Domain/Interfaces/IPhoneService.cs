@@ -21,5 +21,7 @@ namespace Phoneshop.Domain.Interfaces
         List<Phone> Search(string query);
 
         List<Brand> GetBrandList();
+
+        void Delete(int id);
     }
 }

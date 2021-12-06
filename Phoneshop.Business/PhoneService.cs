@@ -55,8 +55,21 @@ namespace Phoneshop.Business
                     brandList.Add(brand);
                 }
                 reader.Close();
+                connection.Close();
             }
             return brandList;
+        }
+
+        public void Delete(int id)
+        {
+            using (SqlConnection connection = new(connectionString))
+            {
+                SqlCommand cmd = new($"DELETE FROM phones WHERE phones.Id = {id}", connection);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
         }
 
         private IEnumerable<Phone> GetPhones()
@@ -85,6 +98,7 @@ namespace Phoneshop.Business
                     list.Add(phone);
                 }
                 reader.Close();
+                connection.Close();
             }
 
             return list;

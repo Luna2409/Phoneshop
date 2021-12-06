@@ -41,6 +41,8 @@
             this.Price = new System.Windows.Forms.Label();
             this.Stock = new System.Windows.Forms.Label();
             this.listBoxPhone = new System.Windows.Forms.ListBox();
+            this.BtnMinus = new System.Windows.Forms.Button();
+            this.BtnPlus = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnExit
@@ -65,7 +67,7 @@
             // lblPrice
             // 
             this.lblPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrice.Location = new System.Drawing.Point(1028, 15);
+            this.lblPrice.Location = new System.Drawing.Point(1139, 16);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(101, 43);
             this.lblPrice.TabIndex = 7;
@@ -73,7 +75,7 @@
             // lblStock
             // 
             this.lblStock.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblStock.Location = new System.Drawing.Point(1028, 78);
+            this.lblStock.Location = new System.Drawing.Point(1139, 79);
             this.lblStock.Name = "lblStock";
             this.lblStock.Size = new System.Drawing.Size(101, 39);
             this.lblStock.TabIndex = 8;
@@ -118,7 +120,7 @@
             this.lblType.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblType.Location = new System.Drawing.Point(649, 78);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(246, 39);
+            this.lblType.Size = new System.Drawing.Size(364, 39);
             this.lblType.TabIndex = 15;
             // 
             // lblBrand
@@ -128,13 +130,13 @@
             this.lblBrand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblBrand.Location = new System.Drawing.Point(649, 15);
             this.lblBrand.Name = "lblBrand";
-            this.lblBrand.Size = new System.Drawing.Size(246, 41);
+            this.lblBrand.Size = new System.Drawing.Size(364, 41);
             this.lblBrand.TabIndex = 16;
             // 
             // Price
             // 
             this.Price.AutoSize = true;
-            this.Price.Location = new System.Drawing.Point(936, 14);
+            this.Price.Location = new System.Drawing.Point(1047, 15);
             this.Price.Name = "Price";
             this.Price.Size = new System.Drawing.Size(80, 37);
             this.Price.TabIndex = 17;
@@ -143,7 +145,7 @@
             // Stock
             // 
             this.Stock.AutoSize = true;
-            this.Stock.Location = new System.Drawing.Point(936, 78);
+            this.Stock.Location = new System.Drawing.Point(1047, 79);
             this.Stock.Name = "Stock";
             this.Stock.Size = new System.Drawing.Size(86, 37);
             this.Stock.TabIndex = 18;
@@ -158,12 +160,36 @@
             this.listBoxPhone.Size = new System.Drawing.Size(515, 633);
             this.listBoxPhone.TabIndex = 19;
             this.listBoxPhone.SelectedIndexChanged += new System.EventHandler(this.ListBoxPhone_SelectedIndexChanged);
+            this.listBoxPhone.SelectedValueChanged += new System.EventHandler(this.ListBoxPhone_SelectedValueChanged);
+            // 
+            // BtnMinus
+            // 
+            this.BtnMinus.Enabled = false;
+            this.BtnMinus.Location = new System.Drawing.Point(12, 700);
+            this.BtnMinus.Name = "BtnMinus";
+            this.BtnMinus.Size = new System.Drawing.Size(50, 50);
+            this.BtnMinus.TabIndex = 20;
+            this.BtnMinus.Text = "-";
+            this.BtnMinus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.BtnMinus.UseVisualStyleBackColor = true;
+            this.BtnMinus.Click += new System.EventHandler(this.BtnMinus_Click);
+            // 
+            // BtnPlus
+            // 
+            this.BtnPlus.Location = new System.Drawing.Point(68, 700);
+            this.BtnPlus.Name = "BtnPlus";
+            this.BtnPlus.Size = new System.Drawing.Size(50, 50);
+            this.BtnPlus.TabIndex = 21;
+            this.BtnPlus.Text = "+";
+            this.BtnPlus.UseVisualStyleBackColor = true;
             // 
             // PhoneOverview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1798, 772);
+            this.Controls.Add(this.BtnPlus);
+            this.Controls.Add(this.BtnMinus);
             this.Controls.Add(this.listBoxPhone);
             this.Controls.Add(this.Stock);
             this.Controls.Add(this.Price);
@@ -199,5 +225,7 @@
         private System.Windows.Forms.Label Price;
         private System.Windows.Forms.Label Stock;
         private System.Windows.Forms.ListBox listBoxPhone;
+        private System.Windows.Forms.Button BtnMinus;
+        private System.Windows.Forms.Button BtnPlus;
     }
 }

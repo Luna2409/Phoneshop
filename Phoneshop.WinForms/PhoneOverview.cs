@@ -13,7 +13,11 @@ namespace Phoneshop.WinForms
         public PhoneOverview()
         {
             InitializeComponent();
+            FillListBox();
+        }
 
+        private void FillListBox()
+        {
             var list = phoneService.GetList();
             listBoxPhone.DisplayMember = nameof(Phone.FullName);
 
@@ -49,8 +53,7 @@ namespace Phoneshop.WinForms
                     {
                         listBoxPhone.Items.Add(item);
                     }
-                }
-                
+                } 
                 return;
             }
 
@@ -69,6 +72,37 @@ namespace Phoneshop.WinForms
         private void BtnExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void BtnMinus_Click(object sender, EventArgs e)
+        {
+            var selectedItem = listBoxPhone.SelectedItem as Phone;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Selected Item does not exist");
+                return;
+            }
+            var selectedID = selectedItem.Id;
+
+            var result = MessageBox.Show("Are you sure you want to delete this phone?", "DELETE", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                phoneService.Delete(selectedID);
+
+                listBoxPhone.Items.Clear();
+                lblBrand.Text = "";
+                lblType.Text = "";
+                lblPrice.Text = "";
+                lblStock.Text = "";
+                lblDescription.Text = "";
+                FillListBox();
+            }
+        }
+
+        private void ListBoxPhone_SelectedValueChanged(object sender, EventArgs e)
+        {
+            BtnMinus.Enabled = true;
         }
     }
 }
