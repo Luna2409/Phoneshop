@@ -104,5 +104,18 @@ namespace Phoneshop.WinForms
         {
             BtnMinus.Enabled = true;
         }
+
+        private void BtnPlus_Click(object sender, EventArgs e)
+        {
+            using (AddPhone newPhone = new())
+            {
+                newPhone.ShowDialog(this);
+                if (newPhone.ApplyBtnClicked)
+                {
+                    listBoxPhone.Items.Clear();
+                    FillListBox();
+                }
+            }
+        }
     }
 }

@@ -182,6 +182,7 @@
             this.BtnPlus.TabIndex = 21;
             this.BtnPlus.Text = "+";
             this.BtnPlus.UseVisualStyleBackColor = true;
+            this.BtnPlus.Click += new System.EventHandler(this.BtnPlus_Click);
             // 
             // PhoneOverview
             // 
@@ -203,7 +204,9 @@
             this.Controls.Add(this.lblPrice);
             this.Controls.Add(this.txtboxSearch);
             this.Controls.Add(this.btnExit);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "PhoneOverview";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phoneshop";
             this.ResumeLayout(false);
             this.PerformLayout();

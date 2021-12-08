@@ -47,7 +47,7 @@ namespace Phoneshop.Business
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
-                { 
+                {
                     Brand brand = new();
                     brand.BrandID = reader.GetInt32(0);
                     brand.BrandName = reader.GetString(1);
@@ -69,6 +69,91 @@ namespace Phoneshop.Business
                 connection.Open();
                 cmd.ExecuteNonQuery();
                 connection.Close();
+            }
+        }
+
+        public void Create(Phone phone)
+        {
+            List<Phone> phoneList = GetList().OrderBy(x => x.Id).ToList();
+            List<Brand> brandList = GetBrandList();
+
+            var newPhoneId = phoneList[phoneList.Count - 1].Id;
+            var newBrandId = brandList[brandList.Count - 1].BrandID;
+            var hasMatch = phoneList.Any(x => x.FullName.ToLower() == phone.FullName.ToLower());
+
+            if (hasMatch)
+            {
+                return;
+            }
+
+            var hasBrand = brandList.Any(x => x.BrandName.ToLower() == phone.Brand.ToLower());
+
+            if (hasBrand)
+            {
+                var brandItem = brandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
+
+                using (SqlConnection connection = new(connectionString))
+                {
+                    var query = "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) " +
+                                "VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)";
+
+                    using (SqlCommand cmd = new(query, connection))
+                    {
+                        newPhoneId++;
+
+                        cmd.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
+                        cmd.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
+                        cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
+                        cmd.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
+                        cmd.Parameters.Add("@PriceWithTax", SqlDbType.Float, 53).Value = phone.PriceWithTax;
+                        cmd.Parameters.Add("@Stock", SqlDbType.Int).Value = phone.Stock;
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+            }
+            else
+            {
+                using (SqlConnection connection = new(connectionString))
+                {
+                    var query1 = "INSERT INTO brands (BrandID, Brand) VALUES (@BrandID, @Brand)";
+
+                    using (SqlCommand cmd = new(query1, connection))
+                    {
+                        newBrandId++;
+
+                        cmd.Parameters.Add("@BrandID", SqlDbType.Int).Value = newBrandId;
+                        cmd.Parameters.Add("@Brand", SqlDbType.NVarChar, 50).Value = phone.Brand;
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                        connection.Close();
+                    }
+
+                    List<Brand> newBrandList = GetBrandList();
+                    var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
+
+                    var query2 = "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) " +
+                                 "VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)";
+
+                    using (SqlCommand cmd = new(query2, connection))
+                    {
+                        newPhoneId++;
+
+                        cmd.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
+                        cmd.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
+                        cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
+                        cmd.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
+                        cmd.Parameters.Add("@PriceWithTax", SqlDbType.Float, 53).Value = phone.PriceWithTax;
+                        cmd.Parameters.Add("@Stock", SqlDbType.Int).Value = phone.Stock;
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
             }
         }
 
