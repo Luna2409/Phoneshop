@@ -1,4 +1,5 @@
-﻿using Phoneshop.Domain.Interfaces;
+﻿using Phoneshop.Business.Extensions;
+using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
 using System.Collections.Generic;
 using System.Data;
@@ -178,6 +179,7 @@ namespace Phoneshop.Business
                     phone.Type = reader.GetString(2);
                     phone.Description = reader.GetString(3);
                     phone.PriceWithTax = reader.GetDouble(4);
+                    phone.PriceWithoutTax = phone.PriceWithoutVat();
                     phone.Stock = reader.GetInt32(5);
 
                     list.Add(phone);

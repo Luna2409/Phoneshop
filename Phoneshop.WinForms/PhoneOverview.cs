@@ -37,6 +37,7 @@ namespace Phoneshop.WinForms
                 lblStock.Text = phone.Stock.ToString();
                 lblDescription.Text = phone.Description;
             }
+            BtnMinus.Enabled = true;
         }
 
         private void TxtboxSearch_TextChanged(object sender, EventArgs e)
@@ -102,7 +103,6 @@ namespace Phoneshop.WinForms
 
         private void ListBoxPhone_SelectedValueChanged(object sender, EventArgs e)
         {
-            BtnMinus.Enabled = true;
         }
 
         private void BtnPlus_Click(object sender, EventArgs e)
