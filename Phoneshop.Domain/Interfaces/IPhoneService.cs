@@ -16,11 +16,11 @@ namespace Phoneshop.Domain.Interfaces
         /// Get a list of all phones in the shop
         /// </summary>
         /// <returns></returns>
-        List<Phone> GetList();
+        IEnumerable<Phone> GetList();
 
-        List<Phone> Search(string query);
+        IEnumerable<Phone> Search(string query);
 
-        List<Brand> GetBrandList();
+        IEnumerable<Brand> GetBrandList();
 
         void Delete(int id);
 

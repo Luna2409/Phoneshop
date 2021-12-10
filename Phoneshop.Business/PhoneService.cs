@@ -15,29 +15,31 @@ namespace Phoneshop.Business
 
         public Phone Get(int id)
         {
-            var phoneList = GetList().OrderBy(x => x.Id).ToList();
-            var foundPhone = phoneList.FirstOrDefault(x => x.Id == id);
+            //var phoneList = GetList().OrderBy(x => x.Id).ToList();
+            //var foundPhone = phoneList.FirstOrDefault(x => x.Id == id);
+            //return foundPhone;
 
-            return foundPhone;
-
-            //return GetPhones("SELECT * FROM phones WHERE Id = {id}");
+            return GetPhone($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}");
         }
 
-        public List<Phone> GetList()
+        public IEnumerable<Phone> GetList()
         {
-            return GetPhones().OrderBy(x => x.Brand).ToList();
+            //return GetPhones().OrderBy(x => x.Brand).ToList();
 
-            //return GetPhones("SELECT * FROM phones ORDER BY Brand");
+            return GetPhones("SELECT * FROM phones " +
+                "INNER JOIN brands ON phones.BrandID=brands.BrandID " +
+                "ORDER BY Brand");
         }
 
-        public List<Phone> Search(string query)
+        public IEnumerable<Phone> Search(string query)
         {
-            return GetPhones().Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
+            //return GetPhones().Where(x => x.Brand.ToUpper().Contains(query.ToUpper()) || x.Type.ToUpper().Contains(query.ToUpper()) || x.Description.ToUpper().Contains(query.ToUpper())).OrderBy(x => x.Brand).ToList();
 
-            //return GetPhones("SELECT * FROM phones ORDER BY Brand WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'");
+            return GetPhones($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
+                $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'").OrderBy(x => x.Brand);
         }
 
-        public List<Brand> GetBrandList()
+        public IEnumerable<Brand> GetBrandList()
         {
             List<Brand> brandList = new();
 
@@ -76,7 +78,7 @@ namespace Phoneshop.Business
         public void Create(Phone phone)
         {
             List<Phone> phoneList = GetList().OrderBy(x => x.Id).ToList();
-            List<Brand> brandList = GetBrandList();
+            List<Brand> brandList = GetBrandList().ToList();
 
             var newPhoneId = phoneList[phoneList.Count - 1].Id;
             var newBrandId = brandList[brandList.Count - 1].BrandID;
@@ -133,7 +135,7 @@ namespace Phoneshop.Business
                         connection.Close();
                     }
 
-                    List<Brand> newBrandList = GetBrandList();
+                    List<Brand> newBrandList = GetBrandList().ToList();
                     var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
 
                     var query2 = "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) " +
@@ -158,16 +160,40 @@ namespace Phoneshop.Business
             }
         }
 
-        private IEnumerable<Phone> GetPhones()
+        private Phone GetPhone(string query)
+        {
+            Phone phone = new();
+
+            using (SqlConnection connection = new(connectionString))
+            {
+                SqlCommand cmd = new(query, connection);
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    phone.Id = reader.GetInt32(0);
+                    phone.BrandID = reader.GetInt32(1);
+                    phone.Type = reader.GetString(2);
+                    phone.Description = reader.GetString(3);
+                    phone.PriceWithTax = reader.GetDouble(4);
+                    phone.PriceWithoutTax = phone.PriceWithoutVat();
+                    phone.Stock = reader.GetInt32(5);
+                    phone.Brand = reader.GetString(7);
+                }
+                reader.Close();
+                connection.Close();
+            }
+            return phone;
+        }
+
+        private IEnumerable<Phone> GetPhones(string query)
         {
             List<Phone> list = new();
 
             using (SqlConnection connection = new(connectionString))
             {
-                SqlCommand cmd = new("SELECT phones.Id, brands.Brand, phones.Type, phones.Description, phones.PriceWithTax, phones.Stock " +
-                                     "FROM phones " +
-                                     "INNER JOIN brands " +
-                                     "ON phones.BrandID=brands.BrandID", connection);
+                SqlCommand cmd = new(query, connection);
 
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -175,12 +201,13 @@ namespace Phoneshop.Business
                 {
                     Phone phone = new();
                     phone.Id = reader.GetInt32(0);
-                    phone.Brand = reader.GetString(1);
+                    phone.BrandID = reader.GetInt32(1);
                     phone.Type = reader.GetString(2);
                     phone.Description = reader.GetString(3);
                     phone.PriceWithTax = reader.GetDouble(4);
                     phone.PriceWithoutTax = phone.PriceWithoutVat();
                     phone.Stock = reader.GetInt32(5);
+                    phone.Brand = reader.GetString(7);
 
                     list.Add(phone);
                 }
