@@ -13,17 +13,28 @@ namespace Phoneshop.Domain.Interfaces
         Phone Get(int id);
 
         /// <summary>
-        /// Get a list of all phones in the shop
+        /// Gets a list of all phones in the shop
         /// </summary>
         /// <returns></returns>
-        List<Phone> GetList();
+        IEnumerable<Phone> GetList();
 
-        List<Phone> Search(string query);
+        /// <summary>
+        /// Searches through the brand, Type and Description for the string
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        IEnumerable<Phone> Search(string query);
 
-        List<Brand> GetBrandList();
-
+        /// <summary>
+        /// Deletes a phone
+        /// </summary>
+        /// <param name="id"></param>
         void Delete(int id);
 
+        /// <summary>
+        /// Creates a phone
+        /// </summary>
+        /// <param name="phone"></param>
         void Create(Phone phone);
     }
 }

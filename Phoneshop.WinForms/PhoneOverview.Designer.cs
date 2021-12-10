@@ -160,7 +160,6 @@
             this.listBoxPhone.Size = new System.Drawing.Size(515, 633);
             this.listBoxPhone.TabIndex = 19;
             this.listBoxPhone.SelectedIndexChanged += new System.EventHandler(this.ListBoxPhone_SelectedIndexChanged);
-            this.listBoxPhone.SelectedValueChanged += new System.EventHandler(this.ListBoxPhone_SelectedValueChanged);
             // 
             // BtnMinus
             // 
