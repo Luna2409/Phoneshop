@@ -11,16 +11,10 @@ namespace Phoneshop.Business
     public class PhoneService : AdoRepository<Phone>, IPhoneService
     {
         private readonly static BrandService brandService = new();
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=phoneshop;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-        public PhoneService()
-        {
-
-        }
 
         public Phone Get(int id)
         {
-            return GetPhone(id);
+            return GetPhone($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}");
 
             //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}"))
             //{
@@ -30,16 +24,18 @@ namespace Phoneshop.Business
 
         public IEnumerable<Phone> GetList()
         {
-            using (var command = new SqlCommand("SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID ORDER BY Brand"))
-            {
-                return GetPhones(command);
-            }
+            return GetList("SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID ORDER BY Brand");
+
+            //using (var command = new SqlCommand("SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID ORDER BY Brand"))
+            //{
+            //    return GetPhones(command);
+            //}
         }
 
         public IEnumerable<Phone> Search(string query)
         {
-            return GetPhones($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
-                $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'")/*.OrderBy(x => x.Brand)*/;
+            return GetList($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
+                $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'").OrderBy(x => x.Brand);
 
             //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'"))
             //{
@@ -63,20 +59,12 @@ namespace Phoneshop.Business
 
         public void Delete(int id)
         {
+            ExecuteNonQuery($"DELETE FROM phones WHERE phones.Id = {id}");
+
             //using (var command = new SqlCommand($"DELETE FROM phones WHERE phones.Id = {id}"))
             //{
             //    ExecuteNonQuery(command);
             //}
-
-
-            using (SqlConnection connection = new(connectionString))
-            {
-                SqlCommand cmd = new($"DELETE FROM phones WHERE phones.Id = {id}", connection);
-
-                connection.Open();
-                cmd.ExecuteNonQuery();
-                connection.Close();
-            }
         }
 
         public void Create(Phone phone)
@@ -86,110 +74,22 @@ namespace Phoneshop.Business
 
             var newPhoneId = phoneList[phoneList.Count - 1].Id;
             var newBrandId = brandList[brandList.Count - 1].BrandID;
-
             var hasMatch = phoneList.Any(x => x.FullName.ToLower() == phone.FullName.ToLower());
+
             if (!hasMatch)
             {
                 var hasBrand = brandList.Any(x => x.BrandName.ToLower() == phone.Brand.ToLower());
 
-                if (hasBrand)
+                if (!hasBrand)
                 {
-                    var brandItem = brandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
-
-                    using (SqlConnection connection = new(connectionString))
-                    {
-                        var query = "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) " +
-                                    "VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)";
-
-                        using (SqlCommand cmd = new(query, connection))
-                        {
-                            newPhoneId++;
-
-                            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
-                            cmd.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
-                            cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
-                            cmd.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
-                            cmd.Parameters.Add("@PriceWithTax", SqlDbType.Float, 53).Value = phone.PriceWithTax;
-                            cmd.Parameters.Add("@Stock", SqlDbType.Int).Value = phone.Stock;
-
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            connection.Close();
-                        }
-                    }
+                    CreateBrand(phone, newBrandId, "INSERT INTO brands (BrandID, Brand) VALUES (@BrandID, @Brand)");
                 }
-                else
-                {
-                    using (SqlConnection connection = new(connectionString))
-                    {
-                        var query1 = "INSERT INTO brands (BrandID, Brand) VALUES (@BrandID, @Brand)";
 
-                        using (SqlCommand cmd = new(query1, connection))
-                        {
-                            newBrandId++;
+                List<Brand> newBrandList = brandService.GetBrandList().ToList();
+                var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
 
-                            cmd.Parameters.Add("@BrandID", SqlDbType.Int).Value = newBrandId;
-                            cmd.Parameters.Add("@Brand", SqlDbType.NVarChar, 50).Value = phone.Brand;
-
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            connection.Close();
-                        }
-
-                        List<Brand> newBrandList = brandService.GetBrandList().ToList();
-                        var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
-
-                        var query2 = "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) " +
-                                     "VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)";
-
-                        using (SqlCommand cmd = new(query2, connection))
-                        {
-                            newPhoneId++;
-
-                            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
-                            cmd.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
-                            cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
-                            cmd.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
-                            cmd.Parameters.Add("@PriceWithTax", SqlDbType.Float, 53).Value = phone.PriceWithTax;
-                            cmd.Parameters.Add("@Stock", SqlDbType.Int).Value = phone.Stock;
-
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            connection.Close();
-                        }
-                    }
-                }
+                CreatePhone(phone, newPhoneId, brandItem, "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)");
             }
-        }
-
-        private IEnumerable<Phone> GetPhones(string query)
-        {
-            List<Phone> list = new();
-
-            using (SqlConnection connection = new())
-            {
-                SqlCommand cmd = new(query, connection);
-
-                connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Phone phone = new();
-                    phone.Id = reader.GetInt32(0);
-                    phone.BrandID = reader.GetInt32(1);
-                    phone.Type = reader.GetString(2);
-                    phone.Description = reader.GetString(3);
-                    phone.PriceWithTax = reader.GetDouble(4);
-                    phone.Stock = reader.GetInt32(5);
-                    phone.Brand = reader.GetString(7);
-
-                    list.Add(phone);
-                }
-                reader.Close();
-                connection.Close();
-            }
-
-            return list;
         }
     }
 }

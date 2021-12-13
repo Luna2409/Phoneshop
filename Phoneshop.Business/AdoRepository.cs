@@ -4,8 +4,10 @@ using Phoneshop.Domain.Objects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,43 +25,53 @@ namespace Phoneshop.Business
 
         public virtual T FillObject(SqlDataReader reader) { return null; }
 
-        public void CreatePhone(SqlCommand command, Phone phone)
+        public void CreateBrand(Phone phone, int newBrandId, string query)
         {
-            throw new NotImplementedException();
-        }
-
-        //public void DeletePhone(SqlCommand command, int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public virtual IEnumerable<T> GetBrands(SqlCommand command)
-        {
-            var reader = (SqlDataReader)null;
-            var list = new List<T>();
-
-            command.Connection = _connection;
-            _connection.Open();
-
-            reader = command.ExecuteReader();
-            while (reader.Read())
+            using (SqlConnection connection = new(connectionString))
             {
-                list.Add(FillObject(reader));
-            }
-            reader.Close();
-            _connection.Close();
-            _connection.Dispose();
+                using (SqlCommand command = new(query, connection))
+                {
+                    newBrandId++;
 
-            return list;
+                    command.Parameters.Add("@BrandID", SqlDbType.Int).Value = newBrandId;
+                    command.Parameters.Add("@Brand", SqlDbType.NVarChar, 50).Value = phone.Brand;
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
         }
 
-        public T GetPhone(int id)
+        public void CreatePhone(Phone phone, int newPhoneId, Brand brandItem, string query)
+        {
+            using (SqlConnection connection = new(connectionString))
+            {
+                using (SqlCommand command = new(query, connection))
+                {
+                    newPhoneId++;
+
+                    command.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
+                    command.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
+                    command.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
+                    command.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
+                    command.Parameters.Add("@PriceWithTax", SqlDbType.Float, 53).Value = phone.PriceWithTax;
+                    command.Parameters.Add("@Stock", SqlDbType.Int).Value = phone.Stock;
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+        }
+
+        public T GetPhone(string query)
         {
             T phone = null;
 
             using (SqlConnection connection = new(connectionString))
-{
-                SqlCommand command = new($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}", connection);
+            {
+                SqlCommand command = new(query, connection);
 
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -90,51 +102,61 @@ namespace Phoneshop.Business
             //return phone;
         }
 
-        public virtual IEnumerable<T> GetPhones(SqlCommand command)
+        public virtual IEnumerable<T> GetList(string query)
         {
-            //var list = new List<T>();
-
-            //using (SqlConnection connection = new(connectionString))
-            //{
-            //    SqlCommand cmd = new(query, connection);
-
-            //    connection.Open();
-            //    SqlDataReader reader = cmd.ExecuteReader();
-            //    while (reader.Read())
-            //    {
-            //        list.Add(FillObject(reader));
-            //    }
-            //    reader.Close();
-            //    connection.Close();
-            //}
-
-            //return list;
-
-            var reader = (SqlDataReader)null;
             var list = new List<T>();
 
-            command.Connection = _connection;
-            _connection.Open();
-
-            reader = command.ExecuteReader();
-            while (reader.Read())
+            using (SqlConnection connection = new(connectionString))
             {
-                list.Add(FillObject(reader));
+                SqlCommand command = new(query, connection);
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(FillObject(reader));
+                }
+                reader.Close();
+                connection.Close();
             }
-            reader.Close();
-            _connection.Close();
-            _connection.Dispose();
 
             return list;
+
+            //var reader = (SqlDataReader)null;
+            //var list = new List<T>();
+
+            //command.Connection = _connection;
+            //_connection.Open();
+
+            //reader = command.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    list.Add(FillObject(reader));
+            //}
+            //reader.Close();
+            //_connection.Close();
+            //_connection.Dispose();
+
+            //return list;
         }
 
-        public void ExecuteNonQuery(SqlCommand command)
+        public void ExecuteNonQuery(string query)
         {
-            command.Connection = _connection;
-            _connection.Open();
-            command.ExecuteNonQuery();
-            _connection.Close();
-            _connection.Dispose();
+            using (SqlConnection connection = new(connectionString))
+            {
+                SqlCommand command = new(query, connection);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+
+
+            //command.Connection = _connection;
+            //_connection.Open();
+            //command.ExecuteNonQuery();
+            //_connection.Close();
+            //_connection.Dispose();
         }
     }
 }

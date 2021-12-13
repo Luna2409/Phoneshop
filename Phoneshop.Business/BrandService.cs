@@ -13,10 +13,13 @@ namespace Phoneshop.Business
     {
         public IEnumerable<Brand> GetBrandList()
         {
-            using (var command = new SqlCommand("SELECT * FROM brands"))
-            {
-                return GetBrands(command);
-            }
+            return GetList("SELECT * FROM brands");
+
+
+            //using (var command = new SqlCommand())
+            //{
+            //    return GetBrands("SELECT * FROM brands");
+            //}
         }
 
         public override Brand FillObject(SqlDataReader reader)
