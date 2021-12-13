@@ -1,6 +1,7 @@
 ﻿using Phoneshop.Business;
 using Phoneshop.Domain.Objects;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Phoneshop.WinForms
@@ -18,7 +19,7 @@ namespace Phoneshop.WinForms
 
         private void FillListBox()
         {
-            var list = phoneService.GetList();
+            var list = phoneService.GetList().ToList();
             listBoxPhone.DisplayMember = nameof(Phone.FullName);
 
             foreach (var item in list)
@@ -49,7 +50,7 @@ namespace Phoneshop.WinForms
                     listChanged = false;
                     listBoxPhone.Items.Clear();
 
-                    var list = phoneService.GetList();
+                    var list = phoneService.GetList().ToList();
                     foreach (var item in list)
                     {
                         listBoxPhone.Items.Add(item);
@@ -60,7 +61,7 @@ namespace Phoneshop.WinForms
 
             listBoxPhone.Items.Clear();
 
-            var found = phoneService.Search(txtboxSearch.Text);
+            var found = phoneService.Search(txtboxSearch.Text).ToList();
 
             foreach (var item in found)
             {

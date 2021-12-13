@@ -2,6 +2,7 @@
 using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -52,34 +53,69 @@ namespace Phoneshop.Business
             return list;
         }
 
-        public T GetPhone(SqlCommand command)
+        public T GetPhone(int id)
         {
-            var reader = (SqlDataReader)null;
             T phone = null;
 
-            command.Connection = _connection;
-            _connection.Open();
+            using (SqlConnection connection = new(connectionString))
+{
+                SqlCommand command = new($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}", connection);
 
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                phone = FillObject(reader);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    phone = FillObject(reader);
+                }
+                reader.Close();
+                connection.Close();
             }
-            reader.Close();
-            _connection.Close();
-            _connection.Dispose();
-
             return phone;
+
+            //var reader = (SqlDataReader)null;
+            //T phone = null;
+
+            //command.Connection = _connection;
+            //_connection.Open();
+
+            //reader = command.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    phone = FillObject(reader);
+            //}
+            //reader.Close();
+            //_connection.Close();
+            //_connection.Dispose();
+
+            //return phone;
         }
 
         public virtual IEnumerable<T> GetPhones(SqlCommand command)
         {
+            //var list = new List<T>();
+
+            //using (SqlConnection connection = new(connectionString))
+            //{
+            //    SqlCommand cmd = new(query, connection);
+
+            //    connection.Open();
+            //    SqlDataReader reader = cmd.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //        list.Add(FillObject(reader));
+            //    }
+            //    reader.Close();
+            //    connection.Close();
+            //}
+
+            //return list;
+
             var reader = (SqlDataReader)null;
             var list = new List<T>();
 
             command.Connection = _connection;
             _connection.Open();
-            
+
             reader = command.ExecuteReader();
             while (reader.Read())
             {

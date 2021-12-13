@@ -75,7 +75,7 @@ namespace Phoneshop
             Console.Write("Search: ");
             var input = Console.ReadLine();
 
-            var result = phoneService.Search(input);
+            var result = phoneService.Search(input).ToList();
 
             foreach (var phone in result)
             {

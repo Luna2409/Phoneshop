@@ -1,4 +1,5 @@
 ﻿using Phoneshop.Business;
+using System.Linq;
 using Xunit;
 
 namespace Phoneshop.Tests.PhoneServiceTests
@@ -15,7 +16,7 @@ namespace Phoneshop.Tests.PhoneServiceTests
         [Fact]
         public void Should_GiveListOfFivePhones()
         {
-            var phones = phoneService.GetList();
+            var phones = phoneService.GetList().ToList();
             var count = phones.Count;
 
             Assert.Equal(9, count);

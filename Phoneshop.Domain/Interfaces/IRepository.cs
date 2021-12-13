@@ -14,7 +14,7 @@ namespace Phoneshop.Domain.Interfaces
         void CreatePhone(SqlCommand command, Phone phone);
         //void DeletePhone(SqlCommand command, int id);
         IEnumerable<T> GetBrands(SqlCommand command);
-        T GetPhone(SqlCommand command);
+        T GetPhone(int id);
         IEnumerable<T> GetPhones(SqlCommand command);
         void ExecuteNonQuery(SqlCommand command);
     }

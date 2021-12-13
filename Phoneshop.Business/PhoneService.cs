@@ -20,13 +20,12 @@ namespace Phoneshop.Business
 
         public Phone Get(int id)
         {
-            using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}"))
-            {
-                return GetPhone(command);
-            }
+            return GetPhone(id);
 
-            //return GetPhone($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}");
-
+            //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}"))
+            //{
+            //    return GetPhone(command);
+            //}
         }
 
         public IEnumerable<Phone> GetList()
@@ -35,21 +34,17 @@ namespace Phoneshop.Business
             {
                 return GetPhones(command);
             }
-
-            //return GetPhones("SELECT * FROM phones " +
-            //    "INNER JOIN brands ON phones.BrandID=brands.BrandID " +
-            //    "ORDER BY Brand");
         }
 
         public IEnumerable<Phone> Search(string query)
         {
-            using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'"))
-            {
-                return GetPhones(command).OrderBy(x => x.Brand);
-            }
+            return GetPhones($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
+                $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'")/*.OrderBy(x => x.Brand)*/;
 
-            //return GetPhones($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
-            //    $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'").OrderBy(x => x.Brand);
+            //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'"))
+            //{
+            //    return GetPhones(command).OrderBy(x => x.Brand);
+            //}
         }
 
         public override Phone FillObject(SqlDataReader reader)
@@ -68,20 +63,20 @@ namespace Phoneshop.Business
 
         public void Delete(int id)
         {
-            using (var command = new SqlCommand($"DELETE FROM phones WHERE phones.Id = {id}"))
-            {
-                ExecuteNonQuery(command);
-            }
-
-
-            //using (SqlConnection connection = new(connectionString))
+            //using (var command = new SqlCommand($"DELETE FROM phones WHERE phones.Id = {id}"))
             //{
-            //    SqlCommand cmd = new($"DELETE FROM phones WHERE phones.Id = {id}", connection);
+            //    ExecuteNonQuery(command);
+            //}
 
-                //    connection.Open();
-                //    cmd.ExecuteNonQuery();
-                //    connection.Close();
-                //}
+
+            using (SqlConnection connection = new(connectionString))
+            {
+                SqlCommand cmd = new($"DELETE FROM phones WHERE phones.Id = {id}", connection);
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
         }
 
         public void Create(Phone phone)
@@ -167,62 +162,34 @@ namespace Phoneshop.Business
             }
         }
 
-        //private Phone GetPhone(string query)
-        //{
-        //    Phone phone = new();
+        private IEnumerable<Phone> GetPhones(string query)
+        {
+            List<Phone> list = new();
 
-        //    using (SqlConnection connection = new())
-        //    {
-        //        SqlCommand cmd = new(query, connection);
+            using (SqlConnection connection = new())
+            {
+                SqlCommand cmd = new(query, connection);
 
-        //        connection.Open();
-        //        SqlDataReader reader = cmd.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            phone.Id = reader.GetInt32(0);
-        //            phone.BrandID = reader.GetInt32(1);
-        //            phone.Type = reader.GetString(2);
-        //            phone.Description = reader.GetString(3);
-        //            phone.PriceWithTax = reader.GetDouble(4);
-        //            phone.PriceWithoutTax = phone.PriceWithoutVat();
-        //            phone.Stock = reader.GetInt32(5);
-        //            phone.Brand = reader.GetString(7);
-        //        }
-        //        reader.Close();
-        //        connection.Close();
-        //    }
-        //    return phone;
-        //}
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Phone phone = new();
+                    phone.Id = reader.GetInt32(0);
+                    phone.BrandID = reader.GetInt32(1);
+                    phone.Type = reader.GetString(2);
+                    phone.Description = reader.GetString(3);
+                    phone.PriceWithTax = reader.GetDouble(4);
+                    phone.Stock = reader.GetInt32(5);
+                    phone.Brand = reader.GetString(7);
 
-        //private IEnumerable<Phone> GetPhones(string query)
-        //{
-        //    List<Phone> list = new();
+                    list.Add(phone);
+                }
+                reader.Close();
+                connection.Close();
+            }
 
-        //    using (SqlConnection connection = new())
-        //    {
-        //        SqlCommand cmd = new(query, connection);
-
-        //        connection.Open();
-        //        SqlDataReader reader = cmd.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            Phone phone = new();
-        //            phone.Id = reader.GetInt32(0);
-        //            phone.BrandID = reader.GetInt32(1);
-        //            phone.Type = reader.GetString(2);
-        //            phone.Description = reader.GetString(3);
-        //            phone.PriceWithTax = reader.GetDouble(4);
-        //            phone.PriceWithoutTax = phone.PriceWithoutVat();
-        //            phone.Stock = reader.GetInt32(5);
-        //            phone.Brand = reader.GetString(7);
-
-        //            list.Add(phone);
-        //        }
-        //        reader.Close();
-        //        connection.Close();
-        //    }
-
-        //    return list;
-        //}
+            return list;
+        }
     }
 }
