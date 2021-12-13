@@ -15,32 +15,17 @@ namespace Phoneshop.Business
         public Phone Get(int id)
         {
             return GetPhone($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}");
-
-            //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Id = {id}"))
-            //{
-            //    return GetPhone(command);
-            //}
         }
 
         public IEnumerable<Phone> GetList()
         {
             return GetList("SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID ORDER BY Brand");
-
-            //using (var command = new SqlCommand("SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID ORDER BY Brand"))
-            //{
-            //    return GetPhones(command);
-            //}
         }
 
         public IEnumerable<Phone> Search(string query)
         {
             return GetList($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID " +
                 $"WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'").OrderBy(x => x.Brand);
-
-            //using (var command = new SqlCommand($"SELECT * FROM phones INNER JOIN brands ON phones.BrandID=brands.BrandID WHERE Brand LIKE '%{query}%' OR Type LIKE '%{query}%' OR Description LIKE '%{query}%'"))
-            //{
-            //    return GetPhones(command).OrderBy(x => x.Brand);
-            //}
         }
 
         public override Phone FillObject(SqlDataReader reader)
@@ -60,11 +45,6 @@ namespace Phoneshop.Business
         public void Delete(int id)
         {
             ExecuteNonQuery($"DELETE FROM phones WHERE phones.Id = {id}");
-
-            //using (var command = new SqlCommand($"DELETE FROM phones WHERE phones.Id = {id}"))
-            //{
-            //    ExecuteNonQuery(command);
-            //}
         }
 
         public void Create(Phone phone)
