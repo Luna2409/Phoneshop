@@ -102,10 +102,6 @@ namespace Phoneshop.WinForms
             }
         }
 
-        private void ListBoxPhone_SelectedValueChanged(object sender, EventArgs e)
-        {
-        }
-
         private void BtnPlus_Click(object sender, EventArgs e)
         {
             using (AddPhone newPhone = new())

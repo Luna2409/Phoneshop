@@ -52,8 +52,6 @@ namespace Phoneshop.Business
             List<Phone> phoneList = GetList().OrderBy(x => x.Id).ToList();
             List<Brand> brandList = brandService.GetBrandList().ToList();
 
-            var newPhoneId = phoneList[phoneList.Count - 1].Id;
-            var newBrandId = brandList[brandList.Count - 1].BrandID;
             var hasMatch = phoneList.Any(x => x.FullName.ToLower() == phone.FullName.ToLower());
 
             if (!hasMatch)
@@ -62,13 +60,13 @@ namespace Phoneshop.Business
 
                 if (!hasBrand)
                 {
-                    CreateBrand(phone, newBrandId, "INSERT INTO brands (BrandID, Brand) VALUES (@BrandID, @Brand)");
+                    CreateBrand(phone, "INSERT INTO brands (Brand) VALUES (@Brand)");
                 }
 
                 List<Brand> newBrandList = brandService.GetBrandList().ToList();
                 var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
 
-                CreatePhone(phone, newPhoneId, brandItem, "INSERT INTO phones (Id, BrandID, Type, Description, PriceWithTax, Stock) VALUES (@Id, @Brand, @Type, @Description, @PriceWithTax, @Stock)");
+                CreatePhone(phone, brandItem, "INSERT INTO phones (BrandID, Type, Description, PriceWithTax, Stock) VALUES (@Brand, @Type, @Description, @PriceWithTax, @Stock)");
             }
         }
     }

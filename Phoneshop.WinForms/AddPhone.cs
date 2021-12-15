@@ -41,7 +41,7 @@ namespace Phoneshop.WinForms
             }
             if (!int.TryParse(txtbxStock.Text, out int stock))
             {
-                MessageBox.Show("Wrong iput at Stock. This field is required");
+                MessageBox.Show("Wrong input at Stock. This field is required");
                 return;
             }
             if (txtbxDescription.Text == string.Empty)

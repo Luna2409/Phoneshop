@@ -1,15 +1,8 @@
-﻿using Phoneshop.Business.Extensions;
-using Phoneshop.Domain.Interfaces;
+﻿using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Phoneshop.Business
 {
@@ -19,15 +12,12 @@ namespace Phoneshop.Business
 
         public virtual T FillObject(SqlDataReader reader) { return null; }
 
-        public void CreateBrand(Phone phone, int newBrandId, string query)
+        public void CreateBrand(Phone phone, string query)
         {
             using (SqlConnection connection = new(connectionString))
             {
                 using (SqlCommand command = new(query, connection))
                 {
-                    newBrandId++;
-
-                    command.Parameters.Add("@BrandID", SqlDbType.Int).Value = newBrandId;
                     command.Parameters.Add("@Brand", SqlDbType.NVarChar, 50).Value = phone.Brand;
 
                     connection.Open();
@@ -37,15 +27,12 @@ namespace Phoneshop.Business
             }
         }
 
-        public void CreatePhone(Phone phone, int newPhoneId, Brand brandItem, string query)
+        public void CreatePhone(Phone phone, Brand brandItem, string query)
         {
             using (SqlConnection connection = new(connectionString))
             {
                 using (SqlCommand command = new(query, connection))
                 {
-                    newPhoneId++;
-
-                    command.Parameters.Add("@Id", SqlDbType.Int).Value = newPhoneId;
                     command.Parameters.Add("@Brand", SqlDbType.Int).Value = brandItem.BrandID;
                     command.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = phone.Type;
                     command.Parameters.Add("@Description", SqlDbType.VarChar, 3000).Value = phone.Description;
