@@ -1,4 +1,4 @@
-﻿using Phoneshop.Business;
+﻿using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
 using System;
 using System.Windows.Forms;
@@ -7,12 +7,13 @@ namespace Phoneshop.WinForms
 {
     public partial class AddPhone : Form
     {
-        private readonly static PhoneService phoneService = new();
+        private readonly IPhoneService _phoneService;
         public bool ApplyBtnClicked { get; set; }
 
-        public AddPhone()
+        public AddPhone(IPhoneService phoneService)
         {
             InitializeComponent();
+            _phoneService = phoneService;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -50,7 +51,7 @@ namespace Phoneshop.WinForms
             newPhone.Stock = stock;
             newPhone.Description = txtbxDescription.Text.ToString();
 
-            phoneService.Create(newPhone);
+            _phoneService.Create(newPhone);
             ApplyBtnClicked = true;
             Close();
         }

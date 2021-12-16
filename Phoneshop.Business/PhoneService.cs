@@ -10,7 +10,12 @@ namespace Phoneshop.Business
 {
     public class PhoneService : AdoRepository<Phone>, IPhoneService
     {
-        private readonly static BrandService brandService = new();
+        private readonly IBrandService _brandService;
+
+        public PhoneService(IBrandService brandService)
+        {
+            _brandService = brandService;
+        }
 
         public Phone Get(int id)
         {
@@ -50,7 +55,7 @@ namespace Phoneshop.Business
         public void Create(Phone phone)
         {
             List<Phone> phoneList = GetList().OrderBy(x => x.Id).ToList();
-            List<Brand> brandList = brandService.GetBrandList().ToList();
+            List<Brand> brandList = _brandService.GetBrandList().ToList();
 
             var hasMatch = phoneList.Any(x => x.FullName.ToLower() == phone.FullName.ToLower());
 
@@ -63,7 +68,7 @@ namespace Phoneshop.Business
                     CreateBrand(phone, "INSERT INTO brands (Brand) VALUES (@Brand)");
                 }
 
-                List<Brand> newBrandList = brandService.GetBrandList().ToList();
+                List<Brand> newBrandList = _brandService.GetBrandList().ToList();
                 var brandItem = newBrandList.Find(x => x.BrandName.ToLower() == phone.Brand.ToLower());
 
                 CreatePhone(phone, brandItem, "INSERT INTO phones (BrandID, Type, Description, PriceWithTax, Stock) VALUES (@Brand, @Type, @Description, @PriceWithTax, @Stock)");

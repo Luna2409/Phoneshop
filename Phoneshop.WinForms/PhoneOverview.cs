@@ -1,4 +1,4 @@
-﻿using Phoneshop.Business;
+﻿using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
 using System;
 using System.Linq;
@@ -8,18 +8,20 @@ namespace Phoneshop.WinForms
 {
     public partial class PhoneOverview : Form
     {
-        private readonly static PhoneService phoneService = new();
+        private readonly IPhoneService _phoneService;
         bool listChanged;
 
-        public PhoneOverview()
+        public PhoneOverview(IPhoneService phoneService)
         {
             InitializeComponent();
+            _phoneService = phoneService;
+
             FillListBox();
         }
 
         private void FillListBox()
         {
-            var list = phoneService.GetList().ToList();
+            var list = _phoneService.GetList().ToList();
             listBoxPhone.DisplayMember = nameof(Phone.FullName);
 
             foreach (var item in list)
@@ -50,7 +52,7 @@ namespace Phoneshop.WinForms
                     listChanged = false;
                     listBoxPhone.Items.Clear();
 
-                    var list = phoneService.GetList().ToList();
+                    var list = _phoneService.GetList().ToList();
                     foreach (var item in list)
                     {
                         listBoxPhone.Items.Add(item);
@@ -61,7 +63,7 @@ namespace Phoneshop.WinForms
 
             listBoxPhone.Items.Clear();
 
-            var found = phoneService.Search(txtboxSearch.Text).ToList();
+            var found = _phoneService.Search(txtboxSearch.Text).ToList();
 
             foreach (var item in found)
             {
@@ -90,7 +92,7 @@ namespace Phoneshop.WinForms
 
             if (result == DialogResult.Yes)
             {
-                phoneService.Delete(selectedID);
+                _phoneService.Delete(selectedID);
 
                 listBoxPhone.Items.Clear();
                 lblBrand.Text = "";
@@ -104,7 +106,7 @@ namespace Phoneshop.WinForms
 
         private void BtnPlus_Click(object sender, EventArgs e)
         {
-            using (AddPhone newPhone = new())
+            using (AddPhone newPhone = new(_phoneService))
             {
                 newPhone.ShowDialog(this);
                 if (newPhone.ApplyBtnClicked)

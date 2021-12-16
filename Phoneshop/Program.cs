@@ -1,4 +1,6 @@
-﻿using Phoneshop.Business;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Phoneshop.Business;
+using Phoneshop.Domain.Interfaces;
 using Phoneshop.Domain.Objects;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,27 @@ namespace Phoneshop
 {
     public class Program
     {
-        private readonly static PhoneService phoneService = new();
-        private static Dictionary<int, Phone> listOfPhones;
-
         static void Main(string[] args)
         {
-            MainMenu();
+            var services = new ServiceCollection();
+
+            ConfigureServices(services);
+
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            var phoneService = serviceProvider.GetRequiredService<IPhoneService>();
+
+            MainMenu(phoneService);
         }
 
-        public static void MainMenu()
+        public static void MainMenu(IPhoneService phoneService)
         {
-            listOfPhones = phoneService.GetList().ToDictionary(x => x.Id);
+            List<Phone> listOfPhones = phoneService.GetList().ToList();
 
             var index = 1;
 
             foreach (var phone in listOfPhones)
             {
-                Console.WriteLine($"{index}. {phone.Value.Brand}, {phone.Value.Type}");
+                Console.WriteLine($"{index}. {phone.Brand}, {phone.Type}");
                 index++;
             }
             Console.WriteLine($"{listOfPhones.Count + 1}. Search");
@@ -37,27 +43,30 @@ namespace Phoneshop
                 Console.Clear();
                 Console.WriteLine("invalid number \n");
 
-                MainMenu();
+                MainMenu(phoneService);
             }
 
             if (number == (listOfPhones.Count + 1))
-                Search();
+                Search(phoneService);
             else
-                Details(number);
+            {
+                int id = listOfPhones[number - 1].Id;
+                Details(id, phoneService);
+            }
         }
 
-        private static void Details(int number)
+        private static void Details(int id, IPhoneService phoneService)
         {
             Console.Clear();
 
-            Phone phoneFound = phoneService.Get(number);
+            Phone phoneFound = phoneService.Get(id);
 
             if (phoneFound == null)
             {
                 Console.Clear();
                 Console.WriteLine("phone not found \n");
 
-                MainMenu();
+                MainMenu(phoneService);
             }
 
             Console.WriteLine($"{phoneFound.Brand}, {phoneFound.Type}, {phoneFound.PriceWithTax} \n");
@@ -65,10 +74,10 @@ namespace Phoneshop
 
             Console.ReadKey();
             Console.Clear();
-            MainMenu();
+            MainMenu(phoneService);
         }
 
-        private static void Search()
+        private static void Search(IPhoneService phoneService)
         {
             Console.Clear();
 
@@ -85,7 +94,14 @@ namespace Phoneshop
             Console.WriteLine("\nPress a key to go back");
             Console.ReadKey();
             Console.Clear();
-            MainMenu();
+            MainMenu(phoneService);
+        }
+
+        private static void ConfigureServices(ServiceCollection services)
+        {
+            services.AddScoped<IPhoneService, PhoneService>();
+            services.AddScoped<IBrandService, BrandService>();
+
         }
     }
 }
