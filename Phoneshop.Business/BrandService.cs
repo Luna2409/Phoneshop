@@ -14,12 +14,6 @@ namespace Phoneshop.Business
         public IEnumerable<Brand> GetBrandList()
         {
             return GetList("SELECT * FROM brands");
-
-
-            //using (var command = new SqlCommand())
-            //{
-            //    return GetBrands("SELECT * FROM brands");
-            //}
         }
 
         public override Brand FillObject(SqlDataReader reader)

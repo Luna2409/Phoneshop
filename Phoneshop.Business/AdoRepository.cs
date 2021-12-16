@@ -22,7 +22,6 @@ namespace Phoneshop.Business
 
                     connection.Open();
                     command.ExecuteNonQuery();
-                    connection.Close();
                 }
             }
         }
@@ -41,7 +40,6 @@ namespace Phoneshop.Business
 
                     connection.Open();
                     command.ExecuteNonQuery();
-                    connection.Close();
                 }
             }
         }
@@ -61,7 +59,6 @@ namespace Phoneshop.Business
                     phone = FillObject(reader);
                 }
                 reader.Close();
-                connection.Close();
             }
             return phone;
         }
@@ -81,7 +78,6 @@ namespace Phoneshop.Business
                     list.Add(FillObject(reader));
                 }
                 reader.Close();
-                connection.Close();
             }
 
             return list;
@@ -95,7 +91,6 @@ namespace Phoneshop.Business
 
                 connection.Open();
                 command.ExecuteNonQuery();
-                connection.Close();
             }
         }
     }
