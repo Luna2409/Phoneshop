@@ -7,10 +7,11 @@ namespace Phoneshop.Tests.PhoneServiceTests
     public class GetList
     {
         private readonly PhoneService phoneService;
+        private readonly BrandService brandService;
 
         public GetList()
         {
-            phoneService = new PhoneService();
+            phoneService = new PhoneService(brandService);
         }
 
         [Fact]
